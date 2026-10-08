@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><div class="eyebrow">PATIENT → CARE TEAM</div><h2>Report a recovery concern</h2><p class="text-muted mb-0">Tell your assigned care team what you are experiencing. You may optionally attach a wound/recovery photo.</p></div></div>
+<div class="row g-3">
+  <div class="col-lg-8"><div class="panel"><form method="post" enctype="multipart/form-data">{{ form.hidden_tag() }}
+    <div class="mb-3"><label class="form-label">Concern type</label>{{ form.category(class="form-select") }}</div>
+    <div class="mb-3"><label class="form-label">What are you experiencing?</label>{{ form.text(class="form-control", rows="6", placeholder="Example: My pain is increasing today, or I noticed a change around my wound.") }}</div>
+    <div class="mb-3"><label class="form-label">Voice transcript (optional)</label>{{ form.voice_transcript(class="form-control", rows="3", placeholder="If you used voice input, the transcript can be saved here.") }}</div>
+    <div class="mb-3"><label class="form-label">Initial priority</label>{{ form.priority(class="form-select") }}<div class="form-text">This is only the patient's initial report. The care team determines clinical priority.</div></div>
+    <div class="mb-3"><label class="form-label">Wound / recovery photo (optional)</label><input class="form-control" type="file" name="photo" accept=".jpg,.jpeg,.png,.webp,image/*"><div class="form-text">The uploaded image is shared with the assigned care team for professional review. RecoverLink does not diagnose the image.</div></div>
+    {{ form.submit(class="btn btn-primary") }} <a class="btn btn-outline-secondary" href="{{ url_for('patient_dashboard') }}">Cancel</a>
+  </form></div></div>
+  <div class="col-lg-4"><div class="panel"><span class="mini-label">CARE WORKFLOW</span><div class="timeline-row"><div class="dot"></div><div><b>1. You report</b><span>Concern, symptoms and optional photo are recorded.</span></div></div><div class="timeline-row"><div class="dot"></div><div><b>2. Care team reviews</b><span>Assigned professionals can view the concern and photo.</span></div></div><div class="timeline-row"><div class="dot"></div><div><b>3. Escalation if needed</b><span>The care team can escalate a concern to the doctor.</span></div></div><div class="timeline-row"><div class="dot"></div><div><b>4. Doctor decision</b><span>Clinical decisions remain with qualified healthcare professionals.</span></div></div><hr><p class="small text-muted mb-0">For urgent situations, follow your hospital/emergency protocol rather than relying on this app.</p></div></div>
+</div>
+{% endblock %}

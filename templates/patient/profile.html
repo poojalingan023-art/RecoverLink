@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><div class="eyebrow">PATIENT PROFILE</div><h2>{{current_user.name}}</h2><p class="text-muted">Keep your contact and emergency contact details current.</p></div></div>
+<div class="row g-3">
+  <div class="col-lg-4"><div class="panel h-100"><div class="mini-label">ACCOUNT DETAILS</div><h5 class="mt-2">{{current_user.name}}</h5><div class="contact-detail"><b>Email</b><span>{{current_user.email}}</span></div><p class="small text-muted mt-3">Your email is used to sign in. Contact your care team if it needs to be changed.</p></div></div>
+  <div class="col-lg-8"><div class="panel"><h5>Patient details</h5><form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="form-label" for="date_of_birth">Date of birth</label><input class="form-control mb-3" id="date_of_birth" name="date_of_birth" type="date" value="{{patient.date_of_birth or ''}}">
+    <label class="form-label" for="phone_number">Phone number</label><input class="form-control mb-3" id="phone_number" name="phone_number" maxlength="40" value="{{patient.phone_number or ''}}" placeholder="Your contact number">
+    <label class="form-label" for="contact_information">Additional contact information</label><input class="form-control mb-3" id="contact_information" name="contact_information" maxlength="255" value="{{patient.contact_information or ''}}" placeholder="Optional contact details">
+    <label class="form-label" for="emergency_contact">Emergency contact name and phone</label><input class="form-control mb-3" id="emergency_contact" name="emergency_contact" maxlength="255" value="{{patient.emergency_contact or ''}}" placeholder="Name · phone number">
+    <button class="btn btn-primary">Save patient details</button>
+  </form></div></div>
+</div>{% endblock %}

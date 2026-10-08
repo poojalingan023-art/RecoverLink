@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<div class="auth-wrap"><div class="auth-card"><div class="eyebrow">NEW ACCOUNT</div><h2>Create an account</h2>
+<form method="post">{{form.hidden_tag()}}
+{{form.name.label(class="form-label")}}{{form.name(class="form-control mb-3")}}
+{{form.email.label(class="form-label")}}{{form.email(class="form-control mb-3")}}
+{{form.password.label(class="form-label")}}{{form.password(class="form-control mb-3")}}
+{{form.role.label(class="form-label")}}{{form.role(class="form-select mb-3")}}
+{{form.submit(class="btn btn-primary w-100")}}</form></div></div>{% endblock %}

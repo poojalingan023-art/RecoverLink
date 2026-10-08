@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head"><div><div class="eyebrow">CARE COORDINATION</div><h2>Recovery Continuity</h2><p class="text-muted">Assign owners, set deadlines, acknowledge concerns, record resolution, and review the care timeline.</p></div></div>
+<div class="row g-3 mb-4">
+  <div class="col-md-4"><div class="panel h-100"><div class="eyebrow">OPEN CONCERNS</div><h2>{{ concerns|rejectattr('status','equalto','Resolved')|list|length }}</h2></div></div>
+  <div class="col-md-4"><div class="panel h-100"><div class="eyebrow">CARE GAPS</div><h2>{{ gaps|length }}</h2><p class="small text-muted">Unassigned concerns or overdue deadlines</p></div></div>
+  <div class="col-md-4"><div class="panel h-100"><div class="eyebrow">AUDIT EVENTS</div><h2>{{ events|length }}</h2><p class="small text-muted">Most recent patient timeline events</p></div></div>
+</div>
+<div class="panel mb-4"><h3>Concern ownership and resolution</h3>
+{% for c in concerns %}{% set w = workflows.get(c.id) %}
+<div class="border rounded-3 p-3 mb-3">
+  <div class="d-flex justify-content-between flex-wrap gap-2"><div><b>{{ c.patient.user.name }} · {{ c.category }}</b><div class="small text-muted">Reported {{ c.created_at.strftime('%d %b %Y %H:%M') }} · {{ c.text or c.voice_transcript or 'No description supplied' }}</div></div><span class="status-pill {{ 'good' if c.status=='Resolved' else 'warn' }}">{{ w.status if w else c.status }}</span></div>
+  <form method="post" class="row g-2 mt-2">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="concern_id" value="{{ c.id }}">
+    <div class="col-md-4"><label class="form-label">Responsible care-team member</label><select class="form-select" name="owner_id"><option value="">Unassigned</option>{% for u in team %}<option value="{{ u.id }}" {% if w and w.owner_id==u.id %}selected{% endif %}>{{ u.name }} ({{ u.professional_role or 'Care team' }})</option>{% endfor %}</select></div>
+    <div class="col-md-3"><label class="form-label">Deadline</label><input class="form-control" type="datetime-local" name="deadline" value="{{ w.deadline.strftime('%Y-%m-%dT%H:%M') if w and w.deadline else '' }}"></div>
+    <div class="col-md-5"><label class="form-label">Resolution note (when resolving)</label><input class="form-control" name="resolution_notes" maxlength="1000" value="{{ w.resolution_notes if w and w.resolution_notes else '' }}" placeholder="Document the outcome"></div>
+    <div class="col-12 d-flex flex-wrap gap-2"><button class="btn btn-primary" name="workflow_action" value="save">Save assignment</button><button class="btn btn-outline-primary" name="workflow_action" value="acknowledge">Acknowledge</button><button class="btn btn-warning" name="workflow_action" value="escalate">Create escalation</button><button class="btn btn-success" name="workflow_action" value="resolve">Mark resolved</button></div>
+  </form>
+  {% if w and w.acknowledged_at %}<p class="small text-muted mt-2 mb-0">Acknowledged {{ w.acknowledged_at.strftime('%d %b %Y %H:%M') }}</p>{% endif %}
+  {% if w and w.deadline and w.deadline < now and w.status!='Resolved' %}<p class="text-danger small mb-0">Overdue: follow up with the responsible care-team member.</p>{% endif %}
+</div>
+{% else %}<p>No patient concerns have been reported yet.</p>{% endfor %}
+</div>
+<div class="panel mb-4"><h3>Care gaps requiring attention</h3><p class="text-muted">These concerns have no assigned owner or have passed their deadline. Escalation creates a tracked item for the doctor to review.</p>{% for c in gaps %}<div class="list-row"><div><b>{{ c.patient.user.name }} · Concern #{{ c.id }}</b><span>{{ c.category }} — {{ c.text or c.voice_transcript or "No description supplied" }}</span><span class="small text-danger">{{ gap_reasons.get(c.id, [])|join(' · ') }}</span></div></div>{% else %}<p>No current care gaps detected.</p>{% endfor %}</div>
+<div class="panel mb-4"><h3>Recovery deviation review</h3><p>Use <a href="{{ url_for('doctor_monitor') }}">Recovery Monitor</a> to review recorded recovery observations against available recovery-plan references. Flags are decision-support prompts, not diagnoses.</p></div>
+<div class="panel"><h3>Audit trail & continuity timeline</h3>{% for e in events %}<div class="list-row"><div><b>{{ e.title }}</b><span>{{ e.description or '' }}</span><span class="small text-muted">{{ e.patient.user.name }} · {{ e.event_type }} · {{ e.created_at.strftime('%d %b %Y %H:%M') }} · {{ e.creator.name if e.creator else 'System' }}</span></div></div>{% else %}<p>No timeline events yet.</p>{% endfor %}</div>
+{% endblock %}

@@ -1,0 +1,1 @@
+{% extends "base.html" %}{% block content %}<div class="page-head"><div><div class="eyebrow">USER MANAGEMENT</div><h2>Hospital users</h2></div></div><div class="panel">{% for u in users %}<div class="list-row"><div><b>{{u.name}}</b><span>{{u.email}}</span></div><span class="tag">{{u.role|replace('_',' ')|title}}</span></div>{% endfor %}</div>{% endblock %}

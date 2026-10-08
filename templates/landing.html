@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero container py-5">
+<div class="row align-items-center g-5">
+<div class="col-lg-7"><div class="eyebrow">HOSPITAL → HOME CARE COORDINATION</div>
+<h1>Connecting the people responsible for recovery.</h1>
+<p class="lead">RecoverLink keeps the doctor-defined recovery pathway, patient concerns, care-team observations, escalations and shift handovers connected in one continuous recovery history.</p>
+<div class="d-flex gap-2 mt-4"><a class="btn btn-primary btn-lg" href="{{url_for('login')}}">Open RecoverLink</a><a class="btn btn-outline-dark btn-lg" href="{{url_for('register')}}">Create account</a></div>
+</div>
+<div class="col-lg-5"><div class="hero-card"><div class="mini-label">RECOVERY PATHWAY</div><div class="path"><span>Doctor</span><b>→</b><span>Care Team</span><b>→</b><span>Patient</span></div><div class="path"><span>Patient concern</span><b>→</b><span>Context review</span><b>→</b><span>Doctor</span></div><hr><p class="small mb-0">The system highlights changes from the configured pathway. It does not diagnose conditions or prescribe treatment.</p></div></div>
+</div></section>
+<section class="container pb-5"><div class="row g-3">
+{% for t,d in [("Recovery Trajectory","Compare recorded recovery observations with the doctor-defined pathway."),("Explainable Escalation","Show the evidence behind a review request instead of an opaque risk score."),("Shift Handover","Carry unresolved work and context safely between care-team shifts."),("Continuous Timeline","Keep surgery, tasks, concerns, notes, decisions and appointments together.")] %}
+<div class="col-md-6 col-xl-3"><div class="feature-card"><h5>{{t}}</h5><p>{{d}}</p></div></div>{% endfor %}
+</div></section>
+{% endblock %}
