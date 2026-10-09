@@ -5,5 +5,3 @@ __pycache__/
 instance/*.db
 static/uploads/*
 !static/uploads/.gitkeep
-.env.*
-!.env.example

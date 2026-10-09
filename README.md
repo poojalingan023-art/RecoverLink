@@ -12,6 +12,17 @@ python app.py
 
 Open `http://127.0.0.1:5000`.
 
+### Demo password
+`RecoverLink@123`
+
+### Demo accounts
+- Doctor: `doctor@example.com`
+- Nurse / Care Team: `nurse@example.com`
+- Physiotherapist / Care Team: `physio@example.com`
+- Patient 1: `patient@example.com` — Arun Kumar — knee replacement, stable
+- Patient 2: `meena@example.com` — Meena Raj — gallbladder surgery, recovery deviation
+- Patient 3: `rahul@example.com` — Rahul S — hernia repair, recovery concern
+- Admin: `admin@example.com`
 
 ## Demo story
 
